@@ -67,12 +67,20 @@ class APIViewSimSimi : AbstractView("/api/simsimi") {
             val response = payload["response"].nullString
 
             if (question != null && response != null) {
-                val responseWrapper = SimSimiResponse(question)
-                responseWrapper.responses.add(response)
+                val found = WebsiteLauncher.simsimiColl.find(
+                        Filters.eq("_id", question)
+                ).firstOrNull()
 
-                WebsiteLauncher.simsimiColl.replaceOne(
-                        Filters.eq("_id", question), responseWrapper, UpdateOptions().upsert(true)
-                )
+                if (found != null) {
+                    found.responses.add(response)
+
+                    WebsiteLauncher.simsimiColl.replaceOne(Filters.eq("_id", question), found, UpdateOptions().upsert(true))
+                } else {
+                    val wrapper = SimSimiResponse(question)
+
+                    wrapper.responses.add(response)
+                    WebsiteLauncher.simsimiColl.insertOne(wrapper)
+                }
             } else {
                 res.status(400)
 
