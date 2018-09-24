@@ -11,6 +11,10 @@ fun List<String>.random(): String {
 fun List<String>.randomOrNull(): String? {
     val random = SplittableRandom()
 
-    return this.getOrNull(random.nextInt(this.size - 1))
+    try {
+        return this.getOrNull(random.nextInt(this.size - 1))
+    } catch (e: IllegalStateException) {
+        return null
+    }
 }
 
