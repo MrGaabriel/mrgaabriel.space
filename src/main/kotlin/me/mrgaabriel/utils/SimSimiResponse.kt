@@ -7,5 +7,5 @@ class SimSimiResponse @BsonCreator constructor(@BsonProperty("_id") _id: String)
 
     @BsonProperty("_id")
     val question = _id // Isto equivale a pergunta
-    var response = ""
+    var responses = mutableListOf<String>()
 }
