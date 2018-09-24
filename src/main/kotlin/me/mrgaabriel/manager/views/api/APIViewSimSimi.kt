@@ -45,7 +45,7 @@ class APIViewSimSimi : AbstractView("/api/simsimi") {
             }
 
             json["api:code"] = 0
-            json["response"] = found.responses[SplittableRandom().nextInt(found.responses.size - 1)]
+            json["response"] = found.responses[SplittableRandom().nextInt(found.responses.size)]
 
             return json
         } else if (req.method() == "POST") {
