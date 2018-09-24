@@ -7,10 +7,12 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.ReplaceOptions
+import com.mongodb.client.model.UpdateOptions
 import me.mrgaabriel.WebsiteLauncher
 import me.mrgaabriel.manager.views.AbstractView
 import me.mrgaabriel.utils.SimSimiResponse
 import me.mrgaabriel.utils.random
+import me.mrgaabriel.utils.randomOrNull
 import org.jooby.MediaType
 import org.jooby.Request
 import org.jooby.Response
@@ -45,7 +47,7 @@ class APIViewSimSimi : AbstractView("/api/simsimi") {
             }
 
             json["api:code"] = 0
-            json["response"] = found.responses.random()
+            json["response"] = found.responses.randomOrNull()
 
             return json
         } else if (req.method() == "POST") {
@@ -71,7 +73,7 @@ class APIViewSimSimi : AbstractView("/api/simsimi") {
                 responseWrapper.responses.add(response)
 
                 WebsiteLauncher.simsimiColl.replaceOne(
-                        Filters.eq("_id", question), responseWrapper, ReplaceOptions().upsert(true)
+                        Filters.eq("_id", question), responseWrapper, UpdateOptions().upsert(true)
                 )
             } else {
                 res.status(400)

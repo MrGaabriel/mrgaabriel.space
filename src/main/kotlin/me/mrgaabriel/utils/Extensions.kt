@@ -7,3 +7,10 @@ fun List<String>.random(): String {
 
     return this[random.nextInt(this.size - 1)]
 }
+
+fun List<String>.randomOrNull(): String? {
+    val random = SplittableRandom()
+
+    return this.getOrNull(random.nextInt(this.size - 1))
+}
+
