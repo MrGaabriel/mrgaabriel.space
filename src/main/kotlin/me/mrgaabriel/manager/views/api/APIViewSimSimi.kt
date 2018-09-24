@@ -6,16 +6,14 @@ import com.github.salomonbrys.kotson.set
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.mongodb.client.model.Filters
-import com.mongodb.client.model.ReplaceOptions
 import com.mongodb.client.model.UpdateOptions
 import me.mrgaabriel.WebsiteLauncher
 import me.mrgaabriel.manager.views.AbstractView
 import me.mrgaabriel.utils.SimSimiResponse
-import me.mrgaabriel.utils.random
-import me.mrgaabriel.utils.randomOrNull
 import org.jooby.MediaType
 import org.jooby.Request
 import org.jooby.Response
+import java.util.*
 
 class APIViewSimSimi : AbstractView("/api/simsimi") {
 
@@ -47,7 +45,7 @@ class APIViewSimSimi : AbstractView("/api/simsimi") {
             }
 
             json["api:code"] = 0
-            json["response"] = found.responses.randomOrNull()
+            json["response"] = found.responses[SplittableRandom().nextInt(found.responses.size - 1)]
 
             return json
         } else if (req.method() == "POST") {

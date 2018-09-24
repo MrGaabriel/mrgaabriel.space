@@ -55,7 +55,7 @@ fun evaluate(file: String, variables: MutableMap<String, Any?> = mutableMapOf())
 }
 
 val Request.path: String get() {
-    return this.path() + if (this.queryString().isPresent) "?${this.queryString()}" else ""
+    return this.path() + if (this.queryString().isPresent) "?${this.queryString().get()}" else ""
 }
 
 val Request.ip: String get() {
