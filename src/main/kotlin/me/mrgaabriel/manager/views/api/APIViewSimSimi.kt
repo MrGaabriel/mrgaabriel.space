@@ -10,6 +10,7 @@ import com.mongodb.client.model.UpdateOptions
 import me.mrgaabriel.WebsiteLauncher
 import me.mrgaabriel.manager.views.AbstractView
 import me.mrgaabriel.utils.SimSimiResponse
+import org.apache.commons.lang3.StringUtils
 import org.jooby.MediaType
 import org.jooby.Request
 import org.jooby.Response
@@ -31,7 +32,7 @@ class APIViewSimSimi : AbstractView("/api/simsimi") {
                 return json
             }
 
-            val question = questionParam.value()
+            val question = StringUtils.stripAccents(questionParam.value().toLowerCase())
 
             val found = WebsiteLauncher.simsimiColl.find(
                     Filters.eq("_id", question)
@@ -67,16 +68,18 @@ class APIViewSimSimi : AbstractView("/api/simsimi") {
             val response = payload["response"].nullString
 
             if (question != null && response != null) {
+                val qst = StringUtils.stripAccents(question)
+
                 val found = WebsiteLauncher.simsimiColl.find(
-                        Filters.eq("_id", question)
+                        Filters.eq("_id", qst)
                 ).firstOrNull()
 
                 if (found != null) {
                     found.responses.add(response)
 
-                    WebsiteLauncher.simsimiColl.replaceOne(Filters.eq("_id", question), found, UpdateOptions().upsert(true))
+                    WebsiteLauncher.simsimiColl.replaceOne(Filters.eq("_id", qst), found, UpdateOptions().upsert(true))
                 } else {
-                    val wrapper = SimSimiResponse(question)
+                    val wrapper = SimSimiResponse(qst)
 
                     wrapper.responses.add(response)
                     WebsiteLauncher.simsimiColl.insertOne(wrapper)
