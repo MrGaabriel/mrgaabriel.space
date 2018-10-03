@@ -10,6 +10,7 @@ import com.mongodb.client.model.UpdateOptions
 import me.mrgaabriel.WebsiteLauncher
 import me.mrgaabriel.manager.views.AbstractView
 import me.mrgaabriel.utils.SimSimiResponse
+import me.mrgaabriel.utils.extensions.random
 import org.apache.commons.lang3.StringUtils
 import org.jooby.MediaType
 import org.jooby.Request
@@ -46,7 +47,7 @@ class APIViewSimSimi : AbstractView("/api/simsimi") {
             }
 
             json["api:code"] = 0
-            json["response"] = found.responses[SplittableRandom().nextInt(found.responses.size)]
+            json["response"] = found.responses.random()
 
             return json
         } else if (req.method() == "POST") {
@@ -68,7 +69,7 @@ class APIViewSimSimi : AbstractView("/api/simsimi") {
             val response = payload["response"].nullString
 
             if (question != null && response != null) {
-                val qst = StringUtils.stripAccents(question)
+                val qst = StringUtils.stripAccents(question).toLowerCase()
 
                 val found = WebsiteLauncher.simsimiColl.find(
                         Filters.eq("_id", qst)
