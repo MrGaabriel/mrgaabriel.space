@@ -33,7 +33,7 @@ class APIViewTranslate : AbstractView("/api/translate") {
 			json
 		}
 		
-		json["api:code"] = 1
+		json["api:code"] = 0
 		json["translated"] = translate(text, from, to)
 		
 		return json
