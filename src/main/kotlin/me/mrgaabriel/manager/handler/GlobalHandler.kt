@@ -2,6 +2,7 @@ package me.mrgaabriel.manager.handler
 
 import me.mrgaabriel.manager.views.AbstractView
 import me.mrgaabriel.manager.views.api.APIViewSimSimi
+import me.mrgaabriel.manager.views.api.APIViewTranslate
 import org.jooby.Request
 import org.jooby.Response
 import java.io.File
@@ -32,5 +33,6 @@ object GlobalHandler {
         views.clear()
 
         views.add(APIViewSimSimi())
+		views.add(APIViewTranslate())
     }
 }

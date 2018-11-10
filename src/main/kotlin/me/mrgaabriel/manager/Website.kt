@@ -4,6 +4,7 @@ import com.mitchellbosecke.pebble.PebbleEngine
 import com.mitchellbosecke.pebble.loader.FileLoader
 import me.mrgaabriel.manager.handler.GlobalHandler
 import org.jooby.Kooby
+import org.jooby.Mutant
 import org.jooby.Request
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -66,4 +67,11 @@ val Request.ip: String get() {
     }
 
     return this.ip()
+}
+
+fun Mutant.getOrNull(): String? {
+	if (!this.isSet)
+		return null
+	
+	return this.value()
 }
