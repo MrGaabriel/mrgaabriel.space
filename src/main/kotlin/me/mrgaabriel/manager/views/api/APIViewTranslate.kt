@@ -1,5 +1,6 @@
 package me.mrgaabriel.manager.views.api
 
+import com.github.salomonbrys.kotson.jsonObject
 import com.github.salomonbrys.kotson.set
 import com.google.gson.JsonObject
 import me.mrgaabriel.manager.getOrNull
@@ -19,19 +20,16 @@ class APIViewTranslate : AbstractView("/api/translate") {
 		val json = JsonObject()
 		
 		val from = req.param("from").getOrNull() ?: "auto"
-		val to = req.param("to").getOrNull() ?: return {
-			json["api:code"] = 1
-			json["error"] = "\"to\" param is not set!"
-			
-			json
-		}
+		val to = req.param("to").getOrNull() ?: return jsonObject(
+				"api:code" to 1,
+				"error" to "Parameter to is not set"
+		)
 		
-		val text = req.param("text").getOrNull() ?: return {
-			json["api:code"] = 1
-			json["error"] = "\"text\" param is not set!"
-			
-			json
-		}
+		val text = req.param("text").getOrNull() ?: return jsonObject(
+				"api:code" to 1,
+				"error" to "Parameter text is not set"
+		)
+		
 		
 		json["api:code"] = 0
 		json["translated"] = translate(text, from, to)
